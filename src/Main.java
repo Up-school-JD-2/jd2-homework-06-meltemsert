@@ -1,10 +1,6 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class Main {
@@ -70,5 +66,24 @@ public class Main {
                 product.getProductStatus()));
     System.out.println("Active products :");
     filteredProducts.forEach(System.out::println);
+
+
+    System.out.println("*********************************");
+
+
+    Product p1 = new Product("111", "prod1", 10, 112.33, "category1", ProductStatus.ACTIVE);
+    Product p2 = new Product("222", "prod2", 20, 34.66, "category1", ProductStatus.ACTIVE);
+    Product p3 = new Product("333", "prod3", 30, 33.33, "category3", ProductStatus.OUT_OF_STOCK);
+    Product p4 = new Product("444", "prod4", 40, 55.33, "category3", ProductStatus.ACTIVE);
+
+    Map<String,Product> activeProduct = new HashMap<>();
+    activeProduct.put("1",p1);
+    activeProduct.put("2",p2);
+    activeProduct.put("3",p3);
+    activeProduct.put("4",p4);
+    List<Product> activeproduct1=  activeProduct.values().stream()
+            .filter(product -> (product.getProductStatus().equals(ProductStatus.ACTIVE)))
+            .sorted(Comparator.comparingDouble(Product::getPrice)).toList();
+    System.out.println(activeproduct1);
   }
 }

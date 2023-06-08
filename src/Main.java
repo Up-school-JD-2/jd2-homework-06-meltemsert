@@ -76,14 +76,14 @@ public class Main {
     Product p3 = new Product("333", "prod3", 30, 33.33, "category3", ProductStatus.OUT_OF_STOCK);
     Product p4 = new Product("444", "prod4", 40, 55.33, "category3", ProductStatus.ACTIVE);
 
-    Map<String,Product> activeProduct = new HashMap<>();
-    activeProduct.put("1",p1);
-    activeProduct.put("2",p2);
-    activeProduct.put("3",p3);
-    activeProduct.put("4",p4);
-    List<Product> activeproduct1=  activeProduct.values().stream()
+    Map<String,Product> products = new HashMap<>();
+    products.put("1",p1);
+    products.put("2",p2);
+    products.put("3",p3);
+    products.put("4",p4);
+    List<Product> activeProducts=  products.values().stream()
             .filter(product -> (product.getProductStatus().equals(ProductStatus.ACTIVE)))
             .sorted(Comparator.comparingDouble(Product::getPrice)).toList();
-    System.out.println(activeproduct1);
+    System.out.println(activeProducts);
   }
 }

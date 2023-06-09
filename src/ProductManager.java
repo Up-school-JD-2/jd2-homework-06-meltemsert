@@ -72,7 +72,6 @@ public class ProductManager {
             return "Supplier not found";
         }
     }
-
     // 0001  1  10
     // 0001  1  10
     // 0001  1  0
@@ -103,18 +102,20 @@ public class ProductManager {
         order.getOrderDetails();
         System.out.println("Total Amount: " + order.getTotalAmount());
     }
-
-   public List<Product> getActiveProductsSortedByPrice() {
-       // ProductStatus'ü ACTIVE olan ürünleri fiyatlarına göre sıralayıp döndüren metodu yazın
-       return products.values().stream()
-               .filter(product -> (product.getProductStatus().equals(ProductStatus.ACTIVE)))
-               .sorted(Comparator.comparingDouble(Product::getPrice)).toList();
-   }
+    public List<Product> getActiveProductsSortedByPrice() {
+        // ProductStatus'ü ACTIVE olan ürünleri fiyatlarına göre sıralayıp döndüren metodu yazın
+        List<Product> activeProduct = products.values().stream()
+                .filter(product -> (product.getProductStatus().equals(ProductStatus.ACTIVE)))
+                .sorted(Comparator.comparingDouble(Product::getPrice)).toList();
+        return activeProduct;
+    }
     public double calculateAveragePriceInCategory(String category) {
-
         // String olarak verilen category'e ait olan ürünlerin fiyatlarının ortalamasını yoksa 0.0 döndüren metodu yazın
         // tip: OptionalDouble kullanımını inceleyin.
-        return 0.0;
+        OptionalDouble productAverage = products.values().stream()
+                .filter(product -> product.getCategory().equals(category))
+                .mapToDouble(Product::getPrice).average();
+        return productAverage.orElse(0.0d);
     }
     public Map<String, Double> getCategoryPriceSum() {
         // category'lere göre gruplayıp, her bir kategoride bulunan ürünlerin toplam fiyatını stream ile hesaplayıp
@@ -122,6 +123,9 @@ public class ProductManager {
         // örn:
         // category-1 105.2
         // category-2 45.0
-        return null;
+        Map<String, Double> totalAmountProduct = products.values().stream()
+                .collect(Collectors.groupingBy(Product::getCategory,
+                        Collectors.summingDouble((product) -> product.getPrice() * product.getStock())));
+        return totalAmountProduct;
     }
 }
